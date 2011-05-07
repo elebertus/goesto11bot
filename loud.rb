@@ -47,14 +47,31 @@ module Cinch::Plugins
         @db = REDIS.new
       end
 
-      match %r/^([A-Z\W]+)$/, :use_prefix => false, :use_suffix => false
+      match %r/^([A-Z0-9\W]+)$/, :use_prefix => false, :use_suffix => false
+
       react_on :channel
 
       def execute(m, query)
-        if query.length >= MIN_LENGTH and query =~ /[A-Z]/ and query.scan(/[A-Z]/).length > query.scan(/\W/).length
+        if query.length >= MIN_LENGTH and query =~ /[A-Z]/ and query.scan(/[A-Z\s0-9]/).length > query.scan(/[^A-Z\s0-9]/).length
           @db.add_loud(query)
           m.reply(@db.randomloud)
         end
+      end
+    end
+
+    class TALKINGTOLOUD
+      include Cinch::Plugin
+      
+      def initialize(*args)
+        super *args
+        @db = REDIS.new
+      end
+
+      prefix lambda { |m| "#{m.bot.nick}:" }
+      match %r/.*/, :use_prefix => true, :use_suffix => false
+      
+      def execute(m)
+        m.reply(@db.randomloud)
       end
     end
 

@@ -1,5 +1,6 @@
 remote1.yml
 remote2.yml
+remote3.yml
 redis.log
 redis.pid
 redis.sock

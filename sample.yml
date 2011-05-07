@@ -10,3 +10,5 @@ daemonize: false
 welcome_text: "HELLO I AM A BOT"
 plugins:
     "Cinch::Plugins::LOUD::BEINGLOUD": 'loud.rb'
+    "Cinch::Plugins::LOUD::TALKINGTOLOUD": 'loud.rb'
+    "Cinch::Plugins::LOUD::LOUDMETA": 'loud.rb'
