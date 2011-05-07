@@ -1,0 +1,12 @@
+server: "localhost"
+ssl: false
+port: 6667
+channels:
+    - "#somechannel"
+username: "GOESTO11BOT"
+realname: "LOOK AT MY HORSE"
+nickname: "GOESTO11BOT"
+daemonize: false
+welcome_text: "HELLO I AM A BOT"
+plugins:
+    "Cinch::Plugins::LOUD::BEINGLOUD": 'loud.rb'
