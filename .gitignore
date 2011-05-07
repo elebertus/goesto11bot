@@ -1,2 +1,8 @@
-remote.yml
+remote1.yml
+remote2.yml
+redis.log
+redis.pid
+redis.sock
+louds.rdb
 louds.db
+appendonly.aof
