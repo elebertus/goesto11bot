@@ -52,7 +52,11 @@ module Cinch::Plugins
       react_on :channel
 
       def execute(m, query)
-        if query.length >= MIN_LENGTH and query =~ /[A-Z]/ and query.scan(/[A-Z\s0-9]/).length > query.scan(/[^A-Z\s0-9]/).length
+        if query.length >= MIN_LENGTH and 
+          query =~ /[A-Z]/ and 
+          query.scan(/[A-Z\s0-9]/).length > query.scan(/[^A-Z\s0-9]/).length and
+          query !~ /^#{Regexp.quote m.bot.nick}/
+
           @db.add_loud(query)
           m.reply(@db.randomloud)
         end
@@ -67,7 +71,7 @@ module Cinch::Plugins
         @db = REDIS.new
       end
 
-      prefix lambda { |m| "#{m.bot.nick}:" }
+      prefix lambda { |m| "#{m.bot.nick}" }
       match %r/.*/, :use_prefix => true, :use_suffix => false
       
       def execute(m)
