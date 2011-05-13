@@ -55,7 +55,7 @@ module Cinch::Plugins
         if query.length >= MIN_LENGTH and 
           query =~ /[A-Z]/ and 
           query.scan(/[A-Z\s0-9]/).length > query.scan(/[^A-Z\s0-9]/).length and
-          query !~ /^#{Regexp.quote m.bot.nick}/
+          query !~ /#{Regexp.quote m.bot.nick}/
 
           @db.add_loud(query)
           m.reply(@db.randomloud)
