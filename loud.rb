@@ -21,7 +21,18 @@ module Cinch::Plugins
       end
 
       def randomloud
-        self.class.last_loud = @db.randomkey
+        key = nil
+
+        loop do
+          key = @db.randomkey
+          score = @db.get key
+
+          if score.to_i >= 0
+            break
+          end
+        end
+
+        self.class.last_loud = key
       end
 
       def bump
@@ -30,6 +41,12 @@ module Cinch::Plugins
 
       def sage
         @db.decr self.class.last_loud
+      end
+
+      def search(pattern)
+        ary = @db.keys(pattern)
+        self.class.last_loud = ary[-1]
+        return ary
       end
 
       def score
@@ -76,6 +93,24 @@ module Cinch::Plugins
       
       def execute(m)
         m.reply(@db.randomloud)
+      end
+    end
+
+    class LOUDSEARCH
+      include Cinch::Plugin
+
+      def initialize(*args)
+        super *args
+        @db = REDIS.new
+      end
+
+      match %r!search\s*(\S*)!, :use_prefix => true
+      react_on :channel
+
+      def execute(m, query)
+        @db.search(query.upcase).last(5).each do |loud|
+          m.reply(loud)
+        end
       end
     end
 

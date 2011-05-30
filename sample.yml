@@ -12,3 +12,4 @@ plugins:
     "Cinch::Plugins::LOUD::BEINGLOUD": 'loud.rb'
     "Cinch::Plugins::LOUD::TALKINGTOLOUD": 'loud.rb'
     "Cinch::Plugins::LOUD::LOUDMETA": 'loud.rb'
+    "Cinch::Plugins::LOUD::LOUDSEARCH": 'loud.rb'
