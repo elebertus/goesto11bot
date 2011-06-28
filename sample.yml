@@ -13,3 +13,5 @@ plugins:
     "Cinch::Plugins::LOUD::TALKINGTOLOUD": 'loud.rb'
     "Cinch::Plugins::LOUD::LOUDMETA": 'loud.rb'
     "Cinch::Plugins::LOUD::LOUDSEARCH": 'loud.rb'
+    "Cinch::Plugins::LOUD::TWIT": 'loud.rb'
+    "Cinch::Plugins::LOUD::LISTEN": 'loud.rb'

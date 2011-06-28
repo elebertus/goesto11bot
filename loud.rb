@@ -1,4 +1,5 @@
 require 'redis'
+require 'twitter'
 
 module Cinch::Plugins
   module LOUD
@@ -9,7 +10,7 @@ module Cinch::Plugins
       end
 
       def initialize
-        @db = Redis.new(:path => 'redis.sock')
+        @db = Redis.new(:path => '/tmp/redis.sock')
         self.class.last_loud = randomloud
       end
 
@@ -52,7 +53,52 @@ module Cinch::Plugins
       def score
         return "#{self.class.last_loud}: #{@db.get(self.class.last_loud)}"
       end
+      
+      def twit_last
+        return "#{self.class.last_loud}"
+      end
     end
+
+    class TWIT
+      include Cinch::Plugin
+
+      def initialize(*args)
+        Twitter.configure do |config|
+          config.consumer_key = 'YourKey'
+          config.consumer_secret = 'YourSecret'
+          config.oauth_token = 'YourOathToken'
+          config.oauth_token_secret = 'YourOauthTokenSecret'
+        end
+        @twit = Twitter.new
+      end
+
+      def post(text)
+        @twit.update(text)
+      end
+
+      def get_last
+       last = @twit.user_timeline("goesto11bot", :count=> "1")
+       p "http://twitter.com/#!/goesto11bot/status/" + last.to_s.match(/([0-9]{10,20})/)[0]
+      end
+    end
+
+   class LISTEN
+     include Cinch::Plugin
+
+     def initialize(*args)
+       super *args
+       @twit = TWIT.new
+       @db = REDIS.new
+     end
+
+     match %r/(twitlast)/, :use_prefix => true, :use_suffix => false
+     react_on :channel
+
+     def execute(m)
+       @twit.post("#{@db.twit_last}")
+       m.reply "#{@twit.get_last}"
+     end
+   end
 
     class BEINGLOUD 
       include Cinch::Plugin
