@@ -1,5 +1,5 @@
 server: "localhost"
-ssl: false
+ssl: true
 port: 6667
 channels:
     - "#somechannel"
@@ -15,3 +15,8 @@ plugins:
     "Cinch::Plugins::LOUD::LOUDSEARCH": 'loud.rb'
     "Cinch::Plugins::LOUD::TWIT": 'loud.rb'
     "Cinch::Plugins::LOUD::LISTEN": 'loud.rb'
+oauth:
+    consumer_key: "YourKey"
+    consumer_secret: "YourSecret"
+    oauth_token: "YourToken"
+    oauth_token_secret: "TokenSecret"
