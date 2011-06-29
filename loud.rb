@@ -1,4 +1,5 @@
 require 'redis'
+require 'yaml'
 require 'twitter'
 
 module Cinch::Plugins
@@ -10,7 +11,7 @@ module Cinch::Plugins
       end
 
       def initialize
-        @db = Redis.new(:path => '/tmp/redis.sock')
+        @db = Redis.new(:path => 'redis.sock')
         self.class.last_loud = randomloud
       end
 
@@ -63,11 +64,12 @@ module Cinch::Plugins
       include Cinch::Plugin
 
       def initialize(*args)
+        conf = YAML.load_file( 'base.yml' )
         Twitter.configure do |config|
-          config.consumer_key = 'YourKey'
-          config.consumer_secret = 'YourSecret'
-          config.oauth_token = 'YourOathToken'
-          config.oauth_token_secret = 'YourOauthTokenSecret'
+          config.consumer_key = conf["oauth"]["consumer_key"]
+          config.consumer_secret = conf["oauth"]["consumer_secret"]
+          config.oauth_token = conf["oauth"]["oauth_token"]
+          config.oauth_token_secret = conf["oauth"]["oauth_token_secret"]
         end
         @twit = Twitter.new
       end
@@ -78,7 +80,7 @@ module Cinch::Plugins
 
       def get_last
        last = @twit.user_timeline("goesto11bot", :count=> "1")
-       p "http://twitter.com/#!/goesto11bot/status/" + last.to_s.match(/([0-9]{10,20})/)[0]
+       puts "http://twitter.com/#!/goesto11bot/status/" + last.to_s.match(/([0-9]{10,20})/)[0]
       end
     end
 
