@@ -80,7 +80,7 @@ module Cinch::Plugins
 
       def get_last
        last = @twit.user_timeline("goesto11bot", :count=> "1")
-       puts "http://twitter.com/#!/goesto11bot/status/" + last.to_s.match(/([0-9]{10,20})/)[0]
+       "http://twitter.com/#!/goesto11bot/status/" + last.to_s.match(/([0-9]{10,20})/)[0]
       end
     end
 
